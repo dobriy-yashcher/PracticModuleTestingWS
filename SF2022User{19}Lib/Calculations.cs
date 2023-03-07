@@ -17,6 +17,26 @@
             this.consultationTime = consultationTime;
         }
 
+        public string[] AvailablePeriods()
+        {
+            var result = new List<string>();
+            int currentDuration = 0;
 
+
+            for (TimeSpan checkTime = beginWorkingTime; checkTime < endWorkingTime; checkTime += TimeSpan.FromMinutes(consultationTime))
+            {
+                string freeTimeInterval;
+                var checkTimeEnd = checkTime + TimeSpan.FromMinutes(consultationTime);
+
+                if (checkTimeEnd < startTimes[currentDuration])
+                {
+                    freeTimeInterval = $"{checkTime.Hours}:{checkTime.Minutes}-{checkTimeEnd.Hours}:{checkTimeEnd.Minutes}";
+                    result.Add(freeTimeInterval);
+                }
+            }
+
+
+            return result.ToArray();
+        }
     }
 }

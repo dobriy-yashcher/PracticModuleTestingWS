@@ -28,15 +28,26 @@
                 string freeTimeInterval;
                 var checkTimeEnd = checkTime + TimeSpan.FromMinutes(consultationTime);
 
-                if (checkTimeEnd < startTimes[currentDuration])
+                freeTimeInterval = $"{checkTime.Hours}:{checkTime.Minutes}-{checkTimeEnd.Hours}:{checkTimeEnd.Minutes}";
+                result.Add(freeTimeInterval);
+
+                /*if (checkTimeEnd < startTimes[currentDuration])
                 {
-                    freeTimeInterval = $"{checkTime.Hours}:{checkTime.Minutes}-{checkTimeEnd.Hours}:{checkTimeEnd.Minutes}";
-                    result.Add(freeTimeInterval);
-                }
+                }*/
             }
 
 
             return result.ToArray();
+        }
+
+        public void PrintAvailablePeriods()
+        {
+            var periods = this.AvailablePeriods();
+
+            foreach (var period in periods)
+            {
+                Console.WriteLine(period);
+            }
         }
     }
 }

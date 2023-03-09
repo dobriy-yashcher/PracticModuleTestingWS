@@ -16,4 +16,8 @@
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SF2022User{19}Lib\SF2022User{19}Lib.csproj" />
+  </ItemGroup>
+
 </Project>

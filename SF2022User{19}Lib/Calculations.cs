@@ -38,7 +38,7 @@
 
                 freeTimeInterval = $"{checkTime.ToString("hh':'mm")} - {checkTimeEnd.ToString("hh':'mm")}";
                 result.Add(freeTimeInterval);
-            }                                                      ]
+            }                                                      
 
             return result.ToArray();
         }

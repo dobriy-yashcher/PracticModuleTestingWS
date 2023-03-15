@@ -141,7 +141,7 @@ namespace SF2022User_19_Tests
         }
 
         [TestMethod]
-        public void AvailablePeriods_DurationIs400_ZeroPeriodsReturned()
+        public void AvailablePeriods_DurationIsEqualWorkingTime_ZeroPeriodsReturned()
         {
             var expected = new string[] { };
 
@@ -160,7 +160,26 @@ namespace SF2022User_19_Tests
         }
 
         [TestMethod]
-        public void AvailablePeriods_BeginTimeOverEndTime_11Periods()
+        public void AvailablePeriods_DurationIsOverWorkingTime_ZeroPeriodsReturned()
+        {
+            var expected = new string[] { };
+
+            Calculations calc = new(
+                startTimes: new TimeSpan[] {
+                    new TimeSpan(8, 0, 0),
+                },
+                durations: new int[] { 401 },
+                beginWorkingTime: TimeSpan.FromHours(8),
+                endWorkingTime: TimeSpan.FromHours(14),
+                consultationTime: 30
+            );
+
+            var actual = calc.AvailablePeriods();
+            CheckResult(actual, expected);
+        }
+
+        [TestMethod]
+        public void AvailablePeriods_BeginTimeIsOverEndTime_11PeriodsReturned()
         {
             var expected = new string[] {
                 "08:00 - 10:00",
@@ -189,7 +208,7 @@ namespace SF2022User_19_Tests
         }
 
         [TestMethod]
-        public void AvailablePeriods_ConsultationTimeOverWorkingTime_ZeroPeriodsReturned()
+        public void AvailablePeriods_ConsultationTimeIsOverWorkingTime_ZeroPeriodsReturned()
         {
             var expected = new string[] { };
 
@@ -203,23 +222,48 @@ namespace SF2022User_19_Tests
 
             var actual = calc.AvailablePeriods();
             CheckResult(actual, expected);
+        }  
+
+        [TestMethod]
+        public void AvailablePeriods_ConsultationTimeIsEqualWorkingTime_1PeriodReturned()
+        {
+            var expected = new string[] {
+                "08:00 - 09:00"
+            };
+
+            Calculations calc = new (
+                startTimes: new TimeSpan[] { },
+                durations: new int[] { },
+                beginWorkingTime: TimeSpan.FromHours(8),
+                endWorkingTime: TimeSpan.FromHours(9),
+                consultationTime: 60
+            );
+
+            var actual = calc.AvailablePeriods();
+            CheckResult(actual, expected);
         }
 
-        /// <summary>
-        /// ДОДЕЛАТЬ!
-        /// </summary>
         [TestMethod]
-        public void AvailablePeriods_ConsultationTimeIs37AndSomeBusyPeriods_00000000000000PeriodsReturned()
+        public void AvailablePeriods_ConsultationTimeIs37AndSomeBusyPeriods_8PeriodsReturned()
         {
-            var expected = new string[] { };
+            var expected = new string[] {
+                "08:23 - 09:00",
+                "09:00 - 09:37",
+                "09:37 - 10:14",
+                "10:53 - 11:30",
+                "11:30 - 12:07",
+                "12:07 - 12:44",
+                "13:30 - 14:07",
+                "14:07 - 14:44"
+            };
 
             Calculations calc = new(
                 startTimes: new TimeSpan[] { 
-                    new TimeSpan(8, 0, 0),
-                    new TimeSpan(8, 0, 0),
-                    new TimeSpan(8, 0, 0),
+                    new TimeSpan(8, 3, 0),
+                    new TimeSpan(10, 23, 0),
+                    new TimeSpan(13, 15, 0),
                 },
-                durations: new int[] { },
+                durations: new int[] { 20, 30, 15 },
                 beginWorkingTime: TimeSpan.FromHours(8),
                 endWorkingTime: TimeSpan.FromHours(15),
                 consultationTime: 37

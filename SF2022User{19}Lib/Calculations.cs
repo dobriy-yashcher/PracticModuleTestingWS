@@ -23,7 +23,7 @@
             var result = new List<string>();
             int currentDuration = 0;
 
-            for (TimeSpan checkTime = beginWorkingTime; checkTime + TimeSpan.FromMinutes(consultationTime) < endWorkingTime; checkTime += TimeSpan.FromMinutes(consultationTime))
+            for (TimeSpan checkTime = beginWorkingTime; checkTime + TimeSpan.FromMinutes(consultationTime) <= endWorkingTime; checkTime += TimeSpan.FromMinutes(consultationTime))
             {
                 string freeTimeInterval;
                 var checkTimeEnd = checkTime + TimeSpan.FromMinutes(consultationTime);
